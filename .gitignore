@@ -1,0 +1,22 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Runtime data
+logs/
+*.log
+data/
+*.db
+*.sqlite3
+
+# Editor / OS
+.DS_Store
+.vscode/

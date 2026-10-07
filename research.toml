@@ -1,0 +1,76 @@
+# Robin research configuration. Edit freely; restart the bot to apply.
+
+[areas]
+countries = ["Zimbabwe", "Zambia", "South Africa", "Botswana"]
+categories = ["AI", "software", "cybersecurity", "agriculture", "telecommunications", "technology"]
+signals = [
+  "underserved markets",
+  "recurring business problems",
+  "government procurement",
+  "tenders",
+  "new regulations",
+  "business expansion",
+  "technology adoption",
+  "funding",
+  "partnerships",
+  "emerging markets",
+  "supply gaps",
+  "opportunities created by new technology",
+]
+
+[search]
+max_results_per_query = 8
+# How far back news searches go: "d" day, "w" week, "m" month, "y" year.
+news_timelimit = "y"
+# Max sources passed to the model per research run (keeps prompts small enough for an 8B model).
+max_sources = 12
+fetch_timeout = 15
+fetch_concurrency = 4
+max_chars_per_source = 2500
+# Results from these domains, or with these words in the title, are dropped as noise.
+blocked_domains = [
+  "alljobspo.com", "vacancymail.co.zw", "indeed.com", "linkedin.com",
+  "glassdoor.com", "careerjunction.co.za", "pnet.co.za", "youtube.com",
+  "facebook.com", "instagram.com", "tiktok.com", "pinterest.com",
+]
+blocked_title_words = ["jobs", "vacancies", "vacancy", "careers", "hiring"]
+
+[analysis]
+max_opportunities = 5
+# Who the opportunities are for; shapes the "accessibility" and "startup_difficulty" scores.
+founder_profile = "A small, tech-capable founder in Southern Africa (software, AI, cybersecurity skills) with limited starting capital."
+# Ollama context window for analysis prompts (qwen3:8b supports up to 40960).
+num_ctx = 16384
+timeout = 600
+
+# Overall score = weighted average of sub-scores (each 1-10).
+# competition and startup_difficulty are inverted (high competition = worse).
+[scoring.weights]
+demand = 0.30
+revenue_potential = 0.25
+competition = 0.15
+startup_difficulty = 0.15
+accessibility = 0.15
+
+# --- Daily intelligence --------------------------------------------------------
+[schedule]
+enabled = true
+# Local Mac time, 24h "HH:MM". The bot must be running (and the Mac awake) at this time.
+time = "08:00"
+# If the bot starts after `time` and today's run hasn't happened yet, run it straight away.
+catch_up = true
+# Each day researches this many country x category combinations, rotating so all are covered
+# over a few days (4 countries x 6 categories = 24 combinations). Each takes ~2 minutes.
+topics_per_day = 6
+# Extra topics researched every day, in addition to the rotation, e.g. ["cybersecurity tenders South Africa"].
+extra_topics = []
+# News recency for daily runs: "d", "w", "m" or "y".
+news_timelimit = "w"
+
+[alerts]
+# Below report_min_score: stored only. From report_min_score: in the daily report.
+# From alert_min_score: high-priority alert (only when new, or newly crossing the threshold).
+report_min_score = 5.0
+alert_min_score = 7.0
+# Hard cap on high-priority alerts per day; any extra go in the daily report.
+max_alerts_per_day = 3
